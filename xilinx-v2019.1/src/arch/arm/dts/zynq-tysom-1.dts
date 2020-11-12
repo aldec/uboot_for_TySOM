@@ -1,0 +1,60 @@
+/*
+* Aldec TySOM-1 board DTS
+*
+* Copyright (C) 2016 Aldec, Inc.
+*
+* SPDX-License-Identifier:	GPL-2.0+
+*/
+/dts-v1/;
+#include "zynq-7000.dtsi"
+
+/ {
+    model = "Aldec TySOM-1 Board";
+    compatible = "aldec,zynq-tysom-1", "xlnx,zynq-7000";
+
+    aliases {
+        ethernet0 = &gem0;
+        serial0 = &uart1;
+        mmc0 = &sdhci0;
+        spi0 = &qspi;
+    };
+
+    memory {
+        device_type = "memory";
+        reg = <0 0x20000000>;
+    };
+};
+&slcr {
+        clkc@100 {
+                fclk-enable = <0xf>;
+                ps-clk-frequency=<50000000>;
+        };
+};
+
+&gem0 {
+    status = "okay";
+    phy-mode = "rgmii-id";
+    phy-handle = <&ethernet_phy>;
+    phy-reset-gpio = <&gpio0 51 0>;
+    phy-reset-active-low;
+
+    ethernet_phy: ethernet-phy@1f {
+        reg = <0x1f>;
+        device_type = "ethernet-phy";
+    };
+};
+
+&uart1 {
+    u-boot,dm-pre-reloc;
+    status = "okay";
+};
+
+&sdhci0 {
+    u-boot,dm-pre-reloc;
+    status = "okay";
+};
+
+&qspi {
+    u-boot,dm-pre-reloc;
+    status = "okay";
+};
